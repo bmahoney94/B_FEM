@@ -16,20 +16,32 @@ Directories
 
 Input File
 	Area
+		Must be continous, or beam assumptions likely fail
 	Elastic Modulus
+		Constant for a homogenous, isotropic, linear elastic material 
 	Second moment of area
+		Can this be calculated?
 	Total length
+		Just a number
 	Load distribution
+		Types
+			Singularities
+				Coordinate and magnitude
+			Polynomials
+				Coefficients
+				Piecewise?
 	Number of nodes
 	Connectivity?  I think I can generate this and won't need to input it.
 	Boundary conditions
 	
 
 Output File
+	Deformation
+	Strain
+	Stress
+		\sigma_xx & \sigma_xy
+	Nodal Forces
 
-Tests
-	Automation
-	Pass/Fail Criteria
 
 Meshing
 	Discontinuities must be nodes
@@ -40,8 +52,6 @@ Meshing
 
 	
 Assembly
-	Quadrature
-	Slicing element arrays
 
 Solver
 

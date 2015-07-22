@@ -1,0 +1,63 @@
+Possible object hierarchy if I decide to get fancy
+
+
+
+Element
+	init
+		order of deformation field(linear, quadratic, etc.)
+		node connectivity
+		length
+		elastic modulus
+		cross sectional area
+		second moment of area
+
+Beam
+	init
+		Read input file for
+			boundary conditions
+			force distribution
+			shape properties
+			# of nodes
+			Elastic modulus
+	Assembly
+	Solver
+	Nodal Displacements
+	Boundary Forces
+	Connectivity
+	Global computed quantities of interest(deformation, stress, etc.)
+	Node creation
+		Search for discontinuities 
+		Split existing nodes
+----------------------------------------------------------
+Hierarchy
+----------------------------------------------------------
+Structure
+	Truss "is-a" Structure
+		"has-a" list of Beam.Rod 
+
+	Frame "Is-a" Structure
+		"has-a" list of Beam.Simple_Beam
+Beam (generic)
+	Simple_Beam "is-a" Beam
+		"has-a" constrained axial load
+		"has-a" list of beam_elements
+	Uniaxial_Bar "is-a" Beam
+		"has-a" constrained transverse load
+		"has-a" list of bar_elements
+Element
+	Beam_Element "is-an" Element
+	Rod_Element "is-an" Element
+		
+
+
+
+
+
+---------------------------------------------------------
+Extra Credit Stuff
+---------------------------------------------------------
+Truss
+
+Frame
+
+
