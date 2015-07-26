@@ -44,9 +44,6 @@ Beam (generic)
 	Uniaxial_Bar "is-a" Beam
 		"has-a" constrained transverse load
 		"has-a" list of bar_elements
-Element
-	Beam_Element "is-an" Element
-	Rod_Element "is-an" Element
 		
 
 
