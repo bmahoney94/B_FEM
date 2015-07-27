@@ -18,8 +18,8 @@ class Element(object):
 		self.length = math.sqrt((stop[1] - start[1])**2 + (stop[0] - start[0])**2)	# Element length
 		self.connectivity = connectivity
 		self.bend_stiff = bend_stiff
-		# (u1,v1,theta1,u2,v2,theta2)
-		self.disp = (0.0,0.0,0.0,0.0,0.0,0.0)
+		# (v1,theta1,v2,theta2)
+		self.disp = (0.0,0.0,0.0,0.0)
 	def __str__(self):
 		return """
 length = %.4f
@@ -27,8 +27,14 @@ connectivity = %s
 bending stiffness = %.4f
 displacements = %s
 """ % (self.length, str(self.connectivity),self.bend_stiff,str(self.disp))
-	
 
+	order = "Linear"	
+	
+	def build_stiffness_matrix(self):
+		"""
+		Builds element stiffness matrix and returns it.
+		"""
+		pass
 
 	
 class Beam(object):
