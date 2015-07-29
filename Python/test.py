@@ -28,3 +28,11 @@ print test_element
 test_beam = Beam(2,((0,0),(1,0)))
 
 
+print "\nPrinting element stiffness matrix"
+print "-" * 50
+print test_element.K[0]
+print test_element.K[1]
+print test_element.K[2]
+print test_element.K[3]
+
+
