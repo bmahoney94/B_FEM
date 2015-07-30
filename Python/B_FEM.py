@@ -15,19 +15,20 @@ class Element(object):
 	# bend_stiff is E*I, the bending stiffness
 	
 	def __init__(self,start,stop,connectivity,bend_stiff):
-		self.length = math.sqrt((stop[1] - start[1])**2 + (stop[0] - start[0])**2)	# Element length
+		self.length = math.sqrt((stop[1] - start[1])**2 + (stop[0] - start[0])**2)	# 2D distance formula 
 		self.connectivity = connectivity
 		self.bend_stiff = bend_stiff
 		self.build_element_stiffness_matrix()
 		# (v1,theta1,v2,theta2)
 		#self.disp = (0.0,0.0,0.0,0.0)
 	def __str__(self):
-		return """
-element length = %.4f
-connectivity = %s
-bending stiffness = %.4f
+		output = """
+Element Length = %.4f
+Connectivity = %s
+Bending Stiffness = %.4f
 """ % (self.length, str(self.connectivity),self.bend_stiff)
-
+		output += "Element Order: %s" % self.order
+		return output
 	order = "Linear"	
 	
 	def build_element_stiffness_matrix(self):
@@ -39,11 +40,15 @@ bending stiffness = %.4f
 		K = [map(float,K[i]) for i in range(0,len(K))]
 		K = np.array(K) 
 		K = K * self.bend_stiff
-		K[0,:] = K[0,:]/(self.length**2)
-		K[2,:] = K[0,:]/(self.length**2)
-		K[:,0] = K[:,0]/self.length
-		K[:,2] = K[:,2]/self.length
-		# TODO: check these by hand
+		# This part is a little "un-pythonic"
+		K[0,:] = K[0,:] / (self.length**3)
+		K[2,:] = K[2,:] / (self.length**3)
+		K[1,:] = K[1,:] / (self.length**2)
+		K[3,:] = K[3,:] / (self.length**2)
+
+		K[:,1] = K[:,1] * self.length
+		K[:,3] = K[:,3] * self.length
+
 		
 		self.K = K
 		
@@ -74,6 +79,19 @@ class Bar(Beam):
 	def __init__(self):
 		print "This class is not yet implemented!"
 		exit()
+########################################################################
+def readInput(filename="input.txt"):
+	fid = open(filename,'r')
+	#print "Printing File Identifier"
+	#print fid
+	#print "-" * 50
+	#print "File contents"
+	text = fid.read()
+	#print text
+	fid.close()
+	return text
+
+
 
 
 ## Required functions
@@ -90,13 +108,13 @@ def readLoads():
 	pass
 
 def assembleGlobalStiffnessMatrix():
-	# This is merely a wrapper for the same method in "Beam"
+	# This is merely a wrapper for the same method in "Beam" being used for compliance
 	pass
 
 def imposeContraints():
 	pass
 
-def solver():  # Why do I need this?!
+def solver():  # Why do I need this?! I'm just calling a scipy function.
 	pass 
 
 def reportResults():

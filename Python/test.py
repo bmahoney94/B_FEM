@@ -5,27 +5,30 @@ import numpy as np
 
 from B_FEM import *
 
-fid = open('input.txt','r')
-print "Printing the file identifier"
-print "-" * 50
-print fid 
+#fid = open('input.txt','r')
+#print "Printing the file identifier"
+#print "-" * 50
+#print fid 
 
 print "\n"
 
-print "Printing file contents"
-print "-" * 50
-text = fid.read()
+
+#print "Printing file contents"
+#print "-" * 50
+#text = fid.read()
+text = readInput()
 print text
+#fid.close()
 
+#lines = text.splitlines()
 
-lines = text.splitlines()
-
-test_element = Element((1.0,0.0),(2.0,0.0),(1,2),5*10**6)
+test_element = Element((1.0,0.0),(2.0,0.0),(1,2),1*10**6)
 
 print "\nPrinting a test element's attributes"
 print "-" * 50
 print test_element
-test_beam = Beam(2,((0,0),(1,0)))
+
+
 
 
 print "\nPrinting element stiffness matrix"
