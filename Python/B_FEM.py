@@ -6,6 +6,7 @@ import numpy as np
 import scipy as sp
 import math
 from sys import exit
+import re
 	
 class Element(object):
 	"""
@@ -82,12 +83,7 @@ class Bar(Beam):
 ########################################################################
 def readInput(filename="input.txt"):
 	fid = open(filename,'r')
-	#print "Printing File Identifier"
-	#print fid
-	#print "-" * 50
-	#print "File contents"
-	text = fid.read()
-	#print text
+	text = fid.read()	
 	fid.close()
 	return text
 
@@ -96,20 +92,68 @@ def readInput(filename="input.txt"):
 
 ## Required functions
 def readMesh(input_text):
-	pass
+	"""
+	Reads information about the number of elements and nodal
+	connectvities.
+	"""
+	print "\nReading mesh properties"
+	
+	lines = input_text.splitlines()
+	i = 0
+	for line in lines:
+		
+		if line.startswith('Elements:'):
+			print line
+			try:
+				start = re.search('start:"(.+?)"',line).group(1)
+				stop = re.search('stop:"(.+?)"',line).group(1)
+				connectivity = re.search('vity:"(.+?)"',line).group(1)
+			except:
+				print "Failed to parse Mesh properties."
+				exit(1)
+			i +=1
+			print "Element %d" % i
+			print "Start: " + start
+			print "Stop: " + stop
+			print "Connectivity: " + connectivity
 
 def readProperties(input_text):
+	print "\nReading beam properties"
 	lines = input_text.splitlines()
-	print "Assuming this beam has a square cross-section"
+	
 	for line in lines:
 		if line.startswith('Problem'):
 			print line
+			try:
+				found = re.search('Stiffness:(.+?)}',line).group(1)
+			except AttributeError:
+				found = "Failed to parse properties from input.txt"
+				exit(1)
+			print "Bending stiffness input: " + found
+	return float(found) 
 
 def readConstraints(input_text):
-	pass
+	print "\nReading contraints"
+	lines = input_text.splitlines()
+	for line in lines:
+		if line.startswith('Constraint'):
+			print line
 
 def readLoads(input_text):
-	pass
+	print "\nReading loads"
+	lines = input_text.splitlines()
+	for line in lines:
+		if line.startswith('Forces'):
+			print line
+			try:
+				# Does not find applied moments currently
+				position = re.search("position:(.+?),",line).group(1)
+				force = re.search("force:(.+?)}",line).group(1)
+			except AttributeError:
+				print "Failed to parse applied loads"
+				exit(1)
+			print "Location: " + position
+			print "Force: " + force
 
 def assembleGlobalStiffnessMatrix(Beam):
 	# This is merely a wrapper for the same method in "Beam" being used for project compliance 
