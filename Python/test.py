@@ -20,6 +20,10 @@ text = readInput()
 #print text
 #fid.close()
 readProperties(text)
+readConstraints(text)
+readLoads(text)
+readMesh(text)
+
 #lines = text.splitlines()
 
 test_element = Element((1.0,0.0),(2.0,0.0),(1,2),1*10**6)
@@ -37,4 +41,17 @@ print test_element.K[1]
 print test_element.K[2]
 print test_element.K[3]
 
+print '-' * 50
+
+print "Testing some regular expressions stuff."
+import re
+
+text = 'fdAAA1234zzzuij'
+
+try:
+	found = re.search('AAA(.+?)zzz',text).group(1)
+except AttributeError:
+	found = "Well that didn't work..."
+
+print found
 
