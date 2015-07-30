@@ -17,9 +17,9 @@ print "\n"
 #print "-" * 50
 #text = fid.read()
 text = readInput()
-print text
+#print text
 #fid.close()
-
+readProperties(text)
 #lines = text.splitlines()
 
 test_element = Element((1.0,0.0),(2.0,0.0),(1,2),1*10**6)
@@ -27,7 +27,6 @@ test_element = Element((1.0,0.0),(2.0,0.0),(1,2),1*10**6)
 print "\nPrinting a test element's attributes"
 print "-" * 50
 print test_element
-
 
 
 

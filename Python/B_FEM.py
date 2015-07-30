@@ -95,37 +95,32 @@ def readInput(filename="input.txt"):
 
 
 ## Required functions
-def readMesh():
+def readMesh(input_text):
 	pass
 
-def readProperties():
+def readProperties(input_text):
+	lines = input_text.splitlines()
+	print "Assuming this beam has a square cross-section"
+	for line in lines:
+		if line.startswith('Problem'):
+			print line
+
+def readConstraints(input_text):
 	pass
 
-def readConstraints():
+def readLoads(input_text):
 	pass
 
-def readLoads():
+def assembleGlobalStiffnessMatrix(Beam):
+	# This is merely a wrapper for the same method in "Beam" being used for project compliance 
 	pass
 
-def assembleGlobalStiffnessMatrix():
-	# This is merely a wrapper for the same method in "Beam" being used for compliance
+def imposeContraints(Beam):
 	pass
 
-def imposeContraints():
-	pass
-
-def solver():  # Why do I need this?! I'm just calling a scipy function.
+def solver(Beam):  # Why do I need this?! I'm just calling a scipy function.
 	pass 
 
 def reportResults():
 	pass
-
-
-
-
-
-
-
-
-
 

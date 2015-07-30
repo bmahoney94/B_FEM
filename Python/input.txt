@@ -1,7 +1,8 @@
-"Forces":		{"type":"singularity", "position":"(5,0)", "force":"-5"}
-"Problem":		{"Area":"2","Elastic Modulus":"5000"}
-"BC":			{"type":"displacement", "q1":"0"}
-"BC":			{"type":"force", "F1":"15"}
-"Elements":		{"start":"(0.5,0.0)","stop":"(0.5,0.0)", "connectivity":"(1,2)"}
-"Elements":		{"start":"(0.5,0.0)","stop":"(1.0,0.0)", "connectivity":"(2,3)"}
-"Elements":		{"start":"(1.0,0.0)","stop":"(1.5,0.0)", "connectivity":"(3,4)"}
+Forces:			{type:singularity,position:(5,0),force:-5}
+Problem:		{Bending Stiffness:1000000}
+Constraint:		{q1:0}
+Constraint:		{q2:0}
+Constraint:		{q3:0}
+Elements:		{start:(0.5,0.0),stop:(0.5,0.0),connectivity:(4,1)}
+Elements:		{start:(0.5,0.0),stop:(1.0,0.0),connectivity:(1,3)}
+Elements:		{start:(1.0,0.0),stop:(1.5,0.0),connectivity:(3,2)}
