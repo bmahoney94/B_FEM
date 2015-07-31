@@ -7,6 +7,9 @@ import scipy as sp
 import math
 from sys import exit
 import re
+
+
+
 	
 class Element(object):
 	"""
@@ -14,7 +17,7 @@ class Element(object):
 	the plane.
 	"""
 	# bend_stiff is E*I, the bending stiffness
-	
+	order = "Linear"	
 	def __init__(self,start,stop,connectivity,bend_stiff):
 		self.length = math.sqrt((stop[1] - start[1])**2 + (stop[0] - start[0])**2)	# 2D distance formula 
 		self.connectivity = connectivity
@@ -30,7 +33,7 @@ Bending Stiffness = %.4f
 """ % (self.length, str(self.connectivity),self.bend_stiff)
 		output += "Element Order: %s" % self.order
 		return output
-	order = "Linear"	
+	
 	
 	def build_element_stiffness_matrix(self):
 		"""
@@ -60,18 +63,44 @@ Bending Stiffness = %.4f
 		"""
 		# Unnecessary right now since I have no distributed load
 		pass
+
+
+
+
+
+
+
 	
 class Beam(object):
 	"""
 	A 1-D structural element which can support
 	shear loads.
 	"""
-	def __init__(self,num_elements):
-		print "number of elements: %s" % num_elements
-		elements = []
-		for i in range(0,num_elements):
-			print "Element %d says hello!" % i
+	def __init__(self,text):
+		try:
+			self.bend_stiff = float(readProperties(text))
+			self.mesh = readMesh(text)
+			self.constraints = readConstraints(text)
+			self.forces = readLoads(text)
+			# TODO: Create list of elements
+			# TODO: Rewrite element paramters to accept a list or dictionary
+			elements = []
+		except:
+			print "Failed to initialize the Beam object."
+			exit(1)
 			
+	def __str__(self):
+		output = "\nBending stiffness: %.4f" % self.bend_stiff
+		output += "\nMesh Parameters: " + str(self.mesh)
+		output += "\nNumber of Elements: %d" % len(self.mesh) 
+		output += "\nConstraints: " + str(self.constraints)
+		output += "\nLoads: " + str(self.forces)
+		return output
+
+
+
+
+
 		
 class Bar(Beam):
 	"""
@@ -80,6 +109,14 @@ class Bar(Beam):
 	def __init__(self):
 		print "This class is not yet implemented!"
 		exit()
+
+
+
+
+
+
+
+
 ########################################################################
 def readInput(filename="input.txt"):
 	"""
@@ -89,6 +126,9 @@ def readInput(filename="input.txt"):
 	text = fid.read()	
 	fid.close()
 	return text
+
+
+
 
 
 
@@ -124,6 +164,10 @@ def readMesh(input_text):
 			mesh.append(element)
 
 	return mesh
+
+
+
+
 def readProperties(input_text):
 	"""
 	Reads beam properties.  Right now, just the bending stiffness.
@@ -135,12 +179,17 @@ def readProperties(input_text):
 		if line.startswith('Problem'):
 			print line
 			try:
-				found = re.search('Stiffness:(.+?)}',line).group(1)
-			except AttributeError:
+				bend_stiff = re.search('Stiffness:(.+?)}',line).group(1)
+			except:
 				print "Failed to parse properties from input.txt"
 				exit(1)
-			print "Bending stiffness input: " + found
-	return float(found) 
+			print "Bending stiffness input: " + bend_stiff
+	return float(bend_stiff) 
+
+
+
+
+
 
 def readConstraints(input_text):
 	"""

@@ -19,10 +19,10 @@ print "\n"
 text = readInput()
 #print text
 #fid.close()
-readProperties(text)
-readConstraints(text)
-readLoads(text)
-readMesh(text)
+properties = readProperties(text)
+constraints = readConstraints(text)
+loads = readLoads(text)
+mesh = readMesh(text)
 
 #lines = text.splitlines()
 
@@ -42,4 +42,16 @@ print test_element.K[2]
 print test_element.K[3]
 
 print '-' * 50
+
+print "Output of the read*() functions:\n"
+#print properties
+#print constraints
+#print loads
+#print mesh
+
+test_beam = Beam(text)
+
+print test_beam
+
+
 
