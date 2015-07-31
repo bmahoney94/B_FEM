@@ -66,7 +66,7 @@ class Beam(object):
 	A 1-D structural element which can support
 	shear loads.
 	"""
-	def __init__(self,num_elements,coordinates):
+	def __init__(self,num_elements):
 		print "number of elements: %s" % num_elements
 		elements = []
 		for i in range(0,num_elements):
@@ -82,6 +82,9 @@ class Bar(Beam):
 		exit()
 ########################################################################
 def readInput(filename="input.txt"):
+	"""
+	Reads the input file and returns a string with all of the text.
+	"""
 	fid = open(filename,'r')
 	text = fid.read()	
 	fid.close()
@@ -97,7 +100,8 @@ def readMesh(input_text):
 	connectvities.
 	"""
 	print "\nReading mesh properties"
-	
+	element = {}
+	mesh = []	
 	lines = input_text.splitlines()
 	i = 0
 	for line in lines:
@@ -116,8 +120,14 @@ def readMesh(input_text):
 			print "Start: " + start
 			print "Stop: " + stop
 			print "Connectivity: " + connectivity
+			element = {"ID":i,"start":start,"stop":stop,"Conn":connectivity}
+			mesh.append(element)
 
+	return mesh
 def readProperties(input_text):
+	"""
+	Reads beam properties.  Right now, just the bending stiffness.
+	"""
 	print "\nReading beam properties"
 	lines = input_text.splitlines()
 	
@@ -127,19 +137,38 @@ def readProperties(input_text):
 			try:
 				found = re.search('Stiffness:(.+?)}',line).group(1)
 			except AttributeError:
-				found = "Failed to parse properties from input.txt"
+				print "Failed to parse properties from input.txt"
 				exit(1)
 			print "Bending stiffness input: " + found
 	return float(found) 
 
 def readConstraints(input_text):
+	"""
+	Reads and parses the kinematic constraints.
+	"""
 	print "\nReading contraints"
+
+	constraints = []
 	lines = input_text.splitlines()
 	for line in lines:
 		if line.startswith('Constraint'):
 			print line
+			try:
+				found = re.search('{(.+?)}',line).group(1)
+			except:
+				print "Failed to parse constraints."
+				exit(1)
+			print found 
+			constraints.append(found)
+
+	return constraints
+
 
 def readLoads(input_text):
+	"""
+	Reads and parses the specified loads.
+	"""
+	loads = []
 	print "\nReading loads"
 	lines = input_text.splitlines()
 	for line in lines:
@@ -154,6 +183,11 @@ def readLoads(input_text):
 				exit(1)
 			print "Location: " + position
 			print "Force: " + force
+			loads.append(position)
+			loads.append(force)
+		
+	return loads	
+	
 
 def assembleGlobalStiffnessMatrix(Beam):
 	# This is merely a wrapper for the same method in "Beam" being used for project compliance 
