@@ -107,15 +107,23 @@ class Beam(object):
 		self.K_global = np.zeros((8,8))
 		# Don't forget indices start at 0!!
 		self.K_global[:2,:2]   += self.elements[0].K[2:,2:]
-		self.K_global[-2:,-2:] += self.elements[0].K[-2:,-2:]
+		self.K_global[6:8,6:8] += self.elements[0].K[:2,:2]
 		self.K_global[:2,-2:]  += self.elements[0].K[-2:,:2]	
-		self.K_global[-2:,:2] = self.elements[0].K[:2,-2:]
+		self.K_global[-2:,:2]  += self.elements[0].K[:2,-2:]
 		print self.K_global
 	
 		# TODO: Now add the other 2 element contributions
+		self.K_global[:2,:2]   += self.elements[1].K[:2,:2]		
+		self.K_global[:2,4:6]  += self.elements[1].K[:2,2:]	
+		self.K_global[4:6,:2]  += self.elements[1].K[2:,:2]
+		self.K_global[4:6,4:6] += self.elements[1].K[2:,2:]
+		print self.K_global
 		
-
-
+		self.K_global[4:6,4:6] += self.elements[2].K[:2,:2]
+		self.K_global[4:6,2:4] += self.elements[2].K[:2,2:]
+		self.K_global[2:4,4:6] += self.elements[2].K[2:,:2]
+		self.K_global[2:4,2:4] += self.elements[2].K[2:,2:]
+		print self.K_global/1000.
 
 
 		
