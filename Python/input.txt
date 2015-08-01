@@ -1,8 +1,9 @@
-Forces:			{type:singularity,position:5,force:-5}
+Forces:			{type:singularity,position:0.0,force:-5}
 Problem:		{Bending Stiffness:1000000}
 Constraint:		{q1:0}
-Constraint:		{q2:0}
 Constraint:		{q3:0}
+Constraint:		{q4:0}
+Constraint:		{q5:0}
 Elements:		{start:"0.0,0.0",stop:"10.0,0.0",connectivity:"4,1"}
 Elements:		{start:"10.0,0.0",stop:"20.0,0.0",connectivity:"1,3"}
 Elements:		{start:"20.0,0.0",stop:"30.0,0.0",connectivity:"3,2"}

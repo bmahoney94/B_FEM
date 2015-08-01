@@ -51,8 +51,12 @@ print mesh[1]['conn']
 
 test_beam = Beam(text)
 
-#print test_beam.element0
+print test_beam
+
+assembleGlobalStiffnessMatrix(test_beam)
+imposeConstraints(test_beam)
+
 #print "\nElement 0: " + str(test_beam.mesh[0]['conn']) 
 #print "\nElement 1: " + str(test_beam.mesh[1]['stop'])
 
-test_beam.assembleGlobalStiffnessMatrix()
+#test_beam.assembleGlobalStiffnessMatrix()

@@ -60,7 +60,7 @@ Bending Stiffness = %.4f
 		
 		self.K = K
 		
-	
+
 	def nodal_loads(self):
 		"""
 		Builds vector with equivalent nodal loads.
@@ -110,23 +110,37 @@ class Beam(object):
 		self.K_global[6:8,6:8] += self.elements[0].K[:2,:2]
 		self.K_global[:2,-2:]  += self.elements[0].K[-2:,:2]	
 		self.K_global[-2:,:2]  += self.elements[0].K[:2,-2:]
-		print self.K_global
+		#print self.K_global
 	
-		# TODO: Now add the other 2 element contributions
+
 		self.K_global[:2,:2]   += self.elements[1].K[:2,:2]		
 		self.K_global[:2,4:6]  += self.elements[1].K[:2,2:]	
 		self.K_global[4:6,:2]  += self.elements[1].K[2:,:2]
 		self.K_global[4:6,4:6] += self.elements[1].K[2:,2:]
-		print self.K_global
+		#print self.K_global
 		
 		self.K_global[4:6,4:6] += self.elements[2].K[:2,:2]
 		self.K_global[4:6,2:4] += self.elements[2].K[:2,2:]
 		self.K_global[2:4,4:6] += self.elements[2].K[2:,:2]
 		self.K_global[2:4,2:4] += self.elements[2].K[2:,2:]
-		print self.K_global/1000.
-
-
+		#print self.K_global/1000.
 		
+		return self.K_global
+	
+	def applyConstraints(self):
+		#print self.constraints
+		dof = []
+		for constraint in self.constraints:				
+			try:
+				dof.append(int(re.search('q(.+?):',constraint).group(1)))
+			except:
+				print "Failed to apply constraints."
+				exit()
+		print dof
+
+
+
+
 class Bar(Beam):
 	"""
 	A 1-D structural element which can only support axial loads.
@@ -259,16 +273,17 @@ def readLoads(input_text):
 	return loads	
 	
 
-def assembleGlobalStiffnessMatrix(Beam):
-	# It makes more sense for this to be a member function of the "beam" class.  This one is not functional.
-	pass
+def assembleGlobalStiffnessMatrix(Beam_name):
+	# This is just going to call the member function of the same name of the beam object passed to it. 
+	Beam_name.assembleGlobalStiffnessMatrix()
+	print "Global stiffness matrix before constraints are applied."
+	print Beam_name.K_global
 
-def imposeContraints(Beam):
-	# Refer to Beam.imposeConstraints above.  This is not functional.
-	pass
+def imposeConstraints(Beam_name):
+	Beam_name.applyConstraints()
 
 def solver(Beam):
-	# Refer to the "Beam" class.  This function does nothing.  It's just a reminder for me.
+	
 	pass 
 
 def reportResults():
