@@ -5,16 +5,15 @@ import numpy as np
 
 from B_FEM import *
 
-fid = open('input.txt','r')
-
-text = fid.read()
+text = readInput()
+print "\n\nThe input file's text:\n"
 print text
+mesh = readMesh(text)
 
-lines = text.splitlines()
+test_beam = Beam(text)
 
-test_element = Element((1.0,0.0),(2.0,0.0))
-print "Element length: %.4f" % test_element.length
+assembleGlobalStiffnessMatrix(test_beam)
+imposeConstraints(test_beam)
+solver(test_beam)
 
-test_beam = Beam(2,((0,0),(1,0)))
-
-
+reportResults(test_beam)

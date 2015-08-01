@@ -3,12 +3,10 @@ B_FEM.py is the primary module for my Finite Element project.
 
 """
 import numpy as np
-import scipy as sp
+import scipy.linalg as la
 import math
 from sys import exit
 import re
-
-
 
 	
 class Element(object):
@@ -74,7 +72,7 @@ class Beam(object):
 	A 1-D structural element which can support
 	shear loads.
 	"""
-
+	nodal_displacements = []
 	def __init__(self,text):
 		
 		self.bend_stiff = float(readProperties(text))
@@ -136,7 +134,15 @@ class Beam(object):
 			except:
 				print "Failed to apply constraints."
 				exit()
-		print dof
+		#print "\nApplying kinematic constraints."
+		
+		self.K_global_constr = np.copy(self.K_global)
+		#print self.K_global_constr	 
+		for i in dof:
+
+			self.K_global_constr[i-1,:]   = np.zeros((1,len(self.K_global)))
+			self.K_global_constr[:,i-1]   = np.zeros(len(self.K_global))
+			self.K_global_constr[i-1,i-1] = 1
 
 
 
@@ -187,10 +193,6 @@ def readMesh(input_text):
 				print "Failed to parse Mesh properties."
 				exit(1)
 			i +=1
-			#print "Element %d" % i
-			#print "Start: " + str(start)
-			#print "Stop: " + str(stop)
-			#print "Connectivity: " + str(connectivity)
 			start = map(float,start)
 			stop = map(float,stop)
 			connectivity = map(int,connectivity)
@@ -236,13 +238,11 @@ def readConstraints(input_text):
 	lines = input_text.splitlines()
 	for line in lines:
 		if line.startswith('Constraint'):
-			#print line
 			try:
 				found = re.search('{(.+?)}',line).group(1)
 			except:
 				print "Failed to parse constraints."
 				exit(1)
-			#print found 
 			constraints.append(found)
 
 	return constraints
@@ -265,27 +265,47 @@ def readLoads(input_text):
 			except:
 				print "Failed to parse applied loads"
 				exit(1)
-			#print "Location: " + position
-			#print "Force: " + force
 			loads.append(position)
 			loads.append(force)
-		
+	#print loads
+	#print type(loads[0])	
 	return loads	
 	
 
 def assembleGlobalStiffnessMatrix(Beam_name):
 	# This is just going to call the member function of the same name of the beam object passed to it. 
 	Beam_name.assembleGlobalStiffnessMatrix()
-	print "Global stiffness matrix before constraints are applied."
-	print Beam_name.K_global
+	#print "Global stiffness matrix before constraints are applied."
+	#print Beam_name.K_global
 
 def imposeConstraints(Beam_name):
 	Beam_name.applyConstraints()
 
-def solver(Beam):
-	
-	pass 
+def solver(Beam_name):
+	if Beam_name.forces[0] == "0.0":
+		forces = np.array([0.,0.,0.,0.,0.,0.,float(Beam_name.forces[1]),0.])
+		forces = forces.T
+	else:
+		print "Failed to compute RHS"
+	nodal_displacements = la.solve(Beam_name.K_global_constr,forces)
+	#print nodal_displacements
+	Beam_name.nodal_displacements = nodal_displacements 
 
-def reportResults():
-	pass
+def reportResults(Beam_name):
+	for i in xrange(0,Beam_name.num_elements):
+		print "-" * 50
+		print "\nElement %d " % i
+		print Beam_name.elements[i]
+		print "\nElement %d stiffness matrix" % i
+		print Beam_name.elements[i].K	
+	print "-" * 50
+	print "\nGlobal stiffness matrix before constraints:"
+	print Beam_name.K_global
+	print "\nGlobal stiffness matrix after constraints: "
+	print Beam_name.K_global_constr
+	print "\n\n...Sorry if the above looks ugly.  The builtins are a bit hard to work with at times."
+	print "-" * 50
+	print "\n ...and the coups de grace,"
+	print "the nodal displacements!"
+	print Beam_name.nodal_displacements
 
