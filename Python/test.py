@@ -55,4 +55,4 @@ test_beam = Beam(text)
 #print "\nElement 0: " + str(test_beam.mesh[0]['conn']) 
 #print "\nElement 1: " + str(test_beam.mesh[1]['stop'])
 
-
+test_beam.assembleGlobalStiffnessMatrix()

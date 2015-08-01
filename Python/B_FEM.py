@@ -96,7 +96,24 @@ class Beam(object):
 		output += "\nConstraints: " + str(self.constraints)
 		output += "\nLoads: " + str(self.forces)
 		return output
+	
 
+	def assembleGlobalStiffnessMatrix(self):
+		"""
+		Pretty self explanatory.  Uses member elements of the
+		particular beam instance to build the stiffness matrix for
+		said beam.
+		"""
+		self.K_global = np.zeros((8,8))
+		# Don't forget indices start at 0!!
+		self.K_global[:2,:2]   += self.elements[0].K[2:,2:]
+		self.K_global[-2:,-2:] += self.elements[0].K[-2:,-2:]
+		self.K_global[:2,-2:]  += self.elements[0].K[-2:,:2]	
+		self.K_global[-2:,:2] = self.elements[0].K[:2,-2:]
+		print self.K_global
+	
+		# TODO: Now add the other 2 element contributions
+		
 
 
 
@@ -109,11 +126,6 @@ class Bar(Beam):
 	def __init__(self):
 		print "This class is not yet implemented!"
 		exit(1)
-
-
-
-
-
 
 
 
@@ -130,16 +142,13 @@ def readInput(filename="input.txt"):
 
 
 
-
-
-
 ## Required functions
 def readMesh(input_text):
 	"""
 	Reads information about the number of elements and nodal
 	connectvities.
 	"""
-	print "\nReading mesh properties"
+	#print "\nReading mesh properties"
 	element = {}
 	mesh = []	
 	lines = input_text.splitlines()
@@ -156,10 +165,10 @@ def readMesh(input_text):
 				print "Failed to parse Mesh properties."
 				exit(1)
 			i +=1
-			print "Element %d" % i
-			print "Start: " + str(start)
-			print "Stop: " + str(stop)
-			print "Connectivity: " + str(connectivity)
+			#print "Element %d" % i
+			#print "Start: " + str(start)
+			#print "Stop: " + str(stop)
+			#print "Connectivity: " + str(connectivity)
 			start = map(float,start)
 			stop = map(float,stop)
 			connectivity = map(int,connectivity)
@@ -176,7 +185,7 @@ def readProperties(input_text):
 	"""
 	Reads beam properties.  Right now, just the bending stiffness.
 	"""
-	print "\nReading beam properties"
+	#print "\nReading beam properties"
 	lines = input_text.splitlines()
 	
 	for line in lines:
@@ -199,7 +208,7 @@ def readConstraints(input_text):
 	"""
 	Reads and parses the kinematic constraints.
 	"""
-	print "\nReading contraints"
+	#print "\nReading contraints"
 
 	constraints = []
 	lines = input_text.splitlines()
@@ -222,7 +231,7 @@ def readLoads(input_text):
 	Reads and parses the specified loads.
 	"""
 	loads = []
-	print "\nReading loads"
+	#print "\nReading loads"
 	lines = input_text.splitlines()
 	for line in lines:
 		if line.startswith('Forces'):
@@ -243,13 +252,15 @@ def readLoads(input_text):
 	
 
 def assembleGlobalStiffnessMatrix(Beam):
-	# This is merely a wrapper for the same method in "Beam" being used for project compliance 
+	# It makes more sense for this to be a member function of the "beam" class.  This one is not functional.
 	pass
 
 def imposeContraints(Beam):
+	# Refer to Beam.imposeConstraints above.  This is not functional.
 	pass
 
-def solver(Beam):  # Why do I need this?! I'm just calling a scipy function.
+def solver(Beam):
+	# Refer to the "Beam" class.  This function does nothing.  It's just a reminder for me.
 	pass 
 
 def reportResults():
