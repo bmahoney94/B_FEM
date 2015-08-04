@@ -284,7 +284,7 @@ def imposeConstraints(Beam_name):
 def solver(Beam_name):
 	if Beam_name.forces[0] == "0.0":
 		forces = np.array([0.,0.,0.,0.,0.,0.,float(Beam_name.forces[1]),0.])
-		forces = forces.T
+		forces =-1 * forces.T
 	else:
 		print "Failed to compute RHS"
 	nodal_displacements = la.solve(Beam_name.K_global_constr,forces)
