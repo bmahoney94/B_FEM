@@ -1,0 +1,64 @@
+QUESTIONS FROM NOTES
+-------------------------------------------------------------------
+
+
+
+Q1:  Why did you choose the language you used?
+
+A1:  I've been tinkering with Python for a while, but it is hard to
+	 learn a new language without having an interesting project to 
+	 use it for.  My expectation was that it would let me focus on
+	 the more interesting parts of the assignment, and use built in
+	 methods for the borings stuff like parsing the input file.
+	 I still had to use Regex, which I dislike, but overall it was
+	 fairly painless.  I got to explore Object Oriented design, which
+	 should allow me to extend the functionality of this code in a 
+	 natural manner should I find myself with some free time and a
+	 little curiosity in the coming weeks.
+
+
+Q2:  What did you learn new about programming as a result of this
+	 assignment?
+
+A2:  As I mentioned, I played around with Object Orientation and 
+	 found it to be a natural fit for this kind of material.
+	 I also forced myself to use version control(git) for the first
+	 time ever from start to finish.  It helped me stay on track and
+	 prevented me from breaking everything by being overly ambitious.
+
+
+Q3:  Did programming the FEA code help you understand FEA any better?
+
+A3:  I don't think so.  It let me make the connection as to why
+	 connectivity written as a cooridinate pair is useful.  Working
+	 by hand it is much easier to just draw it.
+
+Q4:  Approximately how many hours did you spend on the first part?
+	 On the second part?
+
+A4:  I did not follow the bottom-up style that was suggested in the
+	 notes so it is hard to say.  I planned mine out, wrote a library
+	 (while testing consistently), and then tied it all together in
+	 maybe 20 minutes with less than 30 lines in my "main" program.
+
+	 The majority of my time was spent constructing the beam through
+	 "composition" of elements.  I created an element "class", then
+	 my beam class consists of a "list" of "elements", and functions
+	 that work using them as attributes.  Parsing my input file took
+	 about 4 hours I think in total, and that's because I got a little
+	 fancy in the format of it.  In total, including initial design, 
+	 this took me about 20 hours over the course of 2 weeks.
+
+Q5:  Would you have liked to do more code development in this class?
+
+
+A5:  At some point it doesn't matter what I "want" to do if I do not
+	 have the time to spare.  Implementing more than I've done and
+	 making things more general would have taken an additional couple
+	 of weeks I feel, and we simply don't have time for that in the
+	 summer session.  I may tinker with this again after finals 
+	 because I'm curious about some things like increasing the order
+	 of the approximation, or writing more generic loads. 
+
+
+
