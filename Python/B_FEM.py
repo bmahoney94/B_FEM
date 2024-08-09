@@ -65,7 +65,7 @@ class Beam(object):
     A 1-D structural element which can support
     shear loads.
     """
-    nodal_displacements = []
+    nodal_displacements = np.ndarray
     def __init__(self,text):
         
         self.bend_stiff = float(readProperties(text))
