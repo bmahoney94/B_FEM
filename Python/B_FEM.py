@@ -129,7 +129,7 @@ class Beam(object):
 
    
 ########################################################################
-def readInput(filename="input.txt"):
+def readInput(filename="input.txt")->str:
     """ Reads the input file and returns a string with all of the text."""
     fid = open(filename,'r')
     text = fid.read()   
@@ -138,7 +138,7 @@ def readInput(filename="input.txt"):
 
 
 ## Required functions
-def readMesh(input_text):
+def readMesh(input_text)->list:
     """ Reads information about the number of elements and nodal connectvities."""
     element = {}
     mesh = []   
@@ -165,7 +165,7 @@ def readMesh(input_text):
     return mesh
 
 
-def readProperties(input_text):
+def readProperties(input_text)->float:
     """ Reads beam properties.  Right now, just the bending stiffness. """
     lines = input_text.splitlines()
     
@@ -179,7 +179,7 @@ def readProperties(input_text):
     return float(bend_stiff) 
 
 
-def readConstraints(input_text):
+def readConstraints(input_text)-> list:
     """ Reads and parses the kinematic constraints.    """
     constraints = []
     lines = input_text.splitlines()
@@ -195,7 +195,7 @@ def readConstraints(input_text):
     return constraints
 
 
-def readLoads(input_text):
+def readLoads(input_text)->list:
     """  Reads and parses the specified loads. """
     loads = []
     lines = input_text.splitlines()
@@ -244,7 +244,6 @@ def reportResults(Beam_name):
     print(Beam_name.K_global)
     print("\nGlobal stiffness matrix after constraints: ")
     print(Beam_name.K_global_constr)
-    print("\n\n...Sorry if the above looks ugly.  The builtins are a bit hard to work with at times.")
     print("-" * 50)
     print("\n ...and the coups de grace,")
     print("the nodal displacements!")
