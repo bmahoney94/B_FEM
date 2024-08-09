@@ -6,8 +6,8 @@ import numpy as np
 from B_FEM import *
 
 text = readInput()
-print "\n\nThe input file's text:\n"
-print text
+print("\n\nThe input file's text:\n")
+print(text)
 mesh = readMesh(text)
 
 test_beam = Beam(text)
