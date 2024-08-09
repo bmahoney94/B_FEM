@@ -107,35 +107,28 @@ class Beam(object):
         self.K_global[6:8,6:8] += self.elements[0].K[:2,:2]
         self.K_global[:2,-2:]  += self.elements[0].K[-2:,:2]    
         self.K_global[-2:,:2]  += self.elements[0].K[:2,-2:]
-        #print(self.K_global
-    
 
         self.K_global[:2,:2]   += self.elements[1].K[:2,:2]     
         self.K_global[:2,4:6]  += self.elements[1].K[:2,2:] 
         self.K_global[4:6,:2]  += self.elements[1].K[2:,:2]
         self.K_global[4:6,4:6] += self.elements[1].K[2:,2:]
-        #print(self.K_global
         
         self.K_global[4:6,4:6] += self.elements[2].K[:2,:2]
         self.K_global[4:6,2:4] += self.elements[2].K[:2,2:]
         self.K_global[2:4,4:6] += self.elements[2].K[2:,:2]
         self.K_global[2:4,2:4] += self.elements[2].K[2:,2:]
-        #print(self.K_global/1000.
         
         return self.K_global
     
     def applyConstraints(self):
-        #print(self.constraints
         dof = []
         for constraint in self.constraints:             
             try:
                 dof.append(int(re.search('q(.+?):',constraint).group(1)))
             except:
                 print("Failed to apply constraints.")
-        #print("\nApplying kinematic constraints."
         
         self.K_global_constr = np.copy(self.K_global)
-        #print(self.K_global_constr  
         for i in dof:
 
             self.K_global_constr[i-1,:]   = np.zeros((1,len(self.K_global)))
@@ -173,7 +166,6 @@ def readMesh(input_text):
     Reads information about the number of elements and nodal
     connectvities.
     """
-    #print("\nReading mesh properties"
     element = {}
     mesh = []   
     lines = input_text.splitlines()
@@ -195,8 +187,6 @@ class Element():
     # bend_stiff is E*I, the bending stiffness
     order = "Linear"    
     def __init__(self, start, stop, connectivity, bend_stiff):
-        print( type( start))    
-        print( type( stop)) 
         self.length = math.sqrt((stop[1] - start[1])**2 + (stop[0] - start[0])**2)   
         self.connectivity = connectivity
         self.bend_stiff = bend_stiff
@@ -287,35 +277,28 @@ class Beam(object):
         self.K_global[6:8,6:8] += self.elements[0].K[:2,:2]
         self.K_global[:2,-2:]  += self.elements[0].K[-2:,:2]    
         self.K_global[-2:,:2]  += self.elements[0].K[:2,-2:]
-        #print(self.K_global
-    
 
         self.K_global[:2,:2]   += self.elements[1].K[:2,:2]     
         self.K_global[:2,4:6]  += self.elements[1].K[:2,2:] 
         self.K_global[4:6,:2]  += self.elements[1].K[2:,:2]
         self.K_global[4:6,4:6] += self.elements[1].K[2:,2:]
-        #print(self.K_global
         
         self.K_global[4:6,4:6] += self.elements[2].K[:2,:2]
         self.K_global[4:6,2:4] += self.elements[2].K[:2,2:]
         self.K_global[2:4,4:6] += self.elements[2].K[2:,:2]
         self.K_global[2:4,2:4] += self.elements[2].K[2:,2:]
-        #print(self.K_global/1000.
         
         return self.K_global
     
     def applyConstraints(self):
-        #print(self.constraints
         dof = []
         for constraint in self.constraints:             
             try:
                 dof.append(int(re.search('q(.+?):',constraint).group(1)))
             except:
                 print("Failed to apply constraints.")
-        #print("\nApplying kinematic constraints."
         
         self.K_global_constr = np.copy(self.K_global)
-        #print(self.K_global_constr  
         for i in dof:
 
             self.K_global_constr[i-1,:]   = np.zeros((1,len(self.K_global)))
@@ -354,7 +337,6 @@ def readMesh(input_text):
     Reads information about the number of elements and nodal
     connectvities.
     """
-    #print("\nReading mesh properties"
     element = {}
     mesh = []   
     lines = input_text.splitlines()
@@ -362,7 +344,6 @@ def readMesh(input_text):
     for line in lines:
         
         if line.startswith('Elements:'):
-            #print(line
             try:
                 start = re.search('start:"(.+?)"',line).group(1).split(',')
                 stop = re.search('stop:"(.+?)"',line).group(1).split(',')
@@ -375,7 +356,6 @@ def readMesh(input_text):
             start = np.array(start, dtype=float)
             stop = np.array(stop, dtype=float)
             connectivity = np.array( connectivity, dtype=int)
-            #print(type(start[0])
             element = {"ID":i,"start":start,"stop":stop,"conn":connectivity}
             mesh.append(element)
 
@@ -388,18 +368,15 @@ def readProperties(input_text):
     """
     Reads beam properties.  Right now, just the bending stiffness.
     """
-    #print("\nReading beam properties"
     lines = input_text.splitlines()
     
     for line in lines:
         if line.startswith('Problem'):
-            #print(line
             try:
                 bend_stiff = re.search('Stiffness:(.+?)}',line).group(1)
             except:
                 print("Failed to parse properties from input.txt")
                 exit(1)
-            #print("Bending stiffness input: " + bend_stiff
     return float(bend_stiff) 
 
 
@@ -411,7 +388,6 @@ def readConstraints(input_text):
     """
     Reads and parses the kinematic constraints.
     """
-    #print("\nReading contraints"
 
     constraints = []
     lines = input_text.splitlines()
@@ -432,11 +408,9 @@ def readLoads(input_text):
     Reads and parses the specified loads.
     """
     loads = []
-    #print("\nReading loads"
     lines = input_text.splitlines()
     for line in lines:
         if line.startswith('Forces'):
-            #print(line
             try:
                 # Does not find applied moments currently
                 position = re.search("position:(.+?),",line).group(1)
@@ -446,16 +420,12 @@ def readLoads(input_text):
                 exit(1)
             loads.append(position)
             loads.append(force)
-    #print(loads
-    #print(type(loads[0])   
     return loads    
     
 
 def assembleGlobalStiffnessMatrix(Beam_name):
     # This is just going to call the member function of the same name of the beam object passed to it. 
     Beam_name.assembleGlobalStiffnessMatrix()
-    #print("Global stiffness matrix before constraints are applied."
-    #print(Beam_name.K_global
 
 def imposeConstraints(Beam_name):
     Beam_name.applyConstraints()
@@ -467,7 +437,6 @@ def solver(Beam_name):
     else:
         print("Failed to compute RHS")
     nodal_displacements = la.solve(Beam_name.K_global_constr,forces)
-    #print(nodal_displacements
     Beam_name.nodal_displacements = nodal_displacements 
 
 def reportResults(Beam_name):
@@ -492,7 +461,6 @@ def reportResults(Beam_name):
     for line in lines:
         
         if line.startswith('Elements:'):
-            #print(line
             try:
                 start = re.search('start:"(.+?)"',line).group(1).split(',')
                 stop = re.search('stop:"(.+?)"',line).group(1).split(',')
@@ -504,7 +472,6 @@ def reportResults(Beam_name):
             start = map(float,start)
             stop = map(float,stop)
             connectivity = map(int,connectivity)
-            #print(type(start[0])
             element = {"ID":i,"start":start,"stop":stop,"conn":connectivity}
             mesh.append(element)
 
@@ -517,18 +484,15 @@ def readProperties(input_text):
     """
     Reads beam properties.  Right now, just the bending stiffness.
     """
-    #print("\nReading beam properties"
     lines = input_text.splitlines()
     
     for line in lines:
         if line.startswith('Problem'):
-            #print(line
             try:
                 bend_stiff = re.search('Stiffness:(.+?)}',line).group(1)
             except:
                 print("Failed to parse properties from input.txt")
                 exit(1)
-            #print("Bending stiffness input: " + bend_stiff
     return float(bend_stiff) 
 
 
@@ -536,7 +500,6 @@ def readConstraints(input_text):
     """
     Reads and parses the kinematic constraints.
     """
-    #print("\nReading contraints"
 
     constraints = []
     lines = input_text.splitlines()
@@ -557,11 +520,9 @@ def readLoads(input_text):
     Reads and parses the specified loads.
     """
     loads = []
-    #print("\nReading loads"
     lines = input_text.splitlines()
     for line in lines:
         if line.startswith('Forces'):
-            #print(line
             try:
                 # Does not find applied moments currently
                 position = re.search("position:(.+?),",line).group(1)
@@ -571,16 +532,12 @@ def readLoads(input_text):
                 exit(1)
             loads.append(position)
             loads.append(force)
-    #print(loads
-    #print(type(loads[0])   
     return loads    
     
 
 def assembleGlobalStiffnessMatrix(Beam_name):
     # This is just going to call the member function of the same name of the beam object passed to it. 
     Beam_name.assembleGlobalStiffnessMatrix()
-    #print("Global stiffness matrix before constraints are applied."
-    #print(Beam_name.K_global
 
 def imposeConstraints(Beam_name):
     Beam_name.applyConstraints()
@@ -592,7 +549,6 @@ def solver(Beam_name):
     else:
         print("Failed to compute RHS")
     nodal_displacements = la.solve(Beam_name.K_global_constr,forces)
-    #print(nodal_displacements
     Beam_name.nodal_displacements = nodal_displacements 
 
 def reportResults(Beam_name):
